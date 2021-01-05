@@ -29,7 +29,7 @@ pipeline {
             steps {
 				withAWS(region:'us-east-1', credentials:'aws-credential') {
 					sh '''
-						aws eks --region us-east-1 update-kubeconfig --name capstone
+						aws eks --region us-east-1 update-kubeconfig --name jenkinscluster
 					'''
 				}
 			}
@@ -38,7 +38,7 @@ pipeline {
             steps {
 				withAWS(region:'us-east-1', credentials:'aws-credential') {
 					sh '''
-						kubectl apply -f ./blue-controller.json
+						kubectl apply -f ./blue/blue-controller.json
 					'''
 				}
 			}
@@ -47,7 +47,7 @@ pipeline {
             steps {
 				withAWS(region:'us-east-1', credentials:'aws-credential') {
 					sh '''
-						kubectl apply -f ./blue-service.json
+						kubectl apply -f ./blue/blue-service.json
 					'''
 				}
 			}
