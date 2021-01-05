@@ -10,7 +10,7 @@ pipeline {
             steps {
 			    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]){
 				    sh '''
-						docker build -t aycav/capstone .
+						docker build -t aycav/capstone -f blue .
 					'''
 			    }
 		    }
@@ -27,7 +27,7 @@ pipeline {
         }
         stage('create the kubeconfig file') {
             steps {
-				withAWS(region:'us-east-1', credentials:'ecr_credentials') {
+				withAWS(region:'us-east-1', credentials:'aws-credential') {
 					sh '''
 						aws eks --region us-east-1 update-kubeconfig --name capstone
 					'''
@@ -36,7 +36,7 @@ pipeline {
         }
         stage('Deploy blue container') {
             steps {
-				withAWS(region:'us-east-1', credentials:'ecr_credentials') {
+				withAWS(region:'us-east-1', credentials:'aws-credential') {
 					sh '''
 						kubectl apply -f ./blue-controller.json
 					'''
@@ -45,7 +45,7 @@ pipeline {
         }
         stage('Redirect service to blue container') {
             steps {
-				withAWS(region:'us-east-1', credentials:'ecr_credentials') {
+				withAWS(region:'us-east-1', credentials:'aws-credential') {
 					sh '''
 						kubectl apply -f ./blue-service.json
 					'''
