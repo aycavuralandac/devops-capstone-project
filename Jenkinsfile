@@ -52,7 +52,7 @@ pipeline {
 				}
 			}
         }
-		stage('Linting') {
+		stage('Get Services') {
             steps {
 				sh '''
 						kubectl get services
