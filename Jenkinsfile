@@ -54,9 +54,11 @@ pipeline {
         }
 		stage('Get Services') {
             steps {
-				sh '''
+				withAWS(region:'us-east-1', credentials:'aws-credential') {
+					sh '''
 						kubectl get services
 					'''
+				}
 			}
         }
         
