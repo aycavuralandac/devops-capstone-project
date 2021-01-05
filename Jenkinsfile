@@ -29,14 +29,14 @@ pipeline {
             steps {
 				withAWS(region:'us-east-1', credentials:'ecr_credentials') {
 					sh '''
-						aws eks --region us-west-2 update-kubeconfig --name capstone
+						aws eks --region us-east-1 update-kubeconfig --name capstone
 					'''
 				}
 			}
         }
         stage('Deploy blue container') {
             steps {
-				withAWS(region:'us-west-2', credentials:'ecr_credentials') {
+				withAWS(region:'us-east-1', credentials:'ecr_credentials') {
 					sh '''
 						kubectl apply -f ./blue-controller.json
 					'''
@@ -45,7 +45,7 @@ pipeline {
         }
         stage('Redirect service to blue container') {
             steps {
-				withAWS(region:'us-west-2', credentials:'ecr_credentials') {
+				withAWS(region:'us-east-1', credentials:'ecr_credentials') {
 					sh '''
 						kubectl apply -f ./blue-service.json
 					'''

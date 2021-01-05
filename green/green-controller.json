@@ -22,7 +22,8 @@
             "containers":[
                {
                   "name":"green",
-                  "image":"aycav/testgreenimage",
+                  "image":"aycav/testgreenimage:latest",
+                  "imagePullPolicy": "Always",
                   "ports":[
                      {
                         "name":"http-server",
