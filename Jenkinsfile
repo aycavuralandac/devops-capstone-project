@@ -3,19 +3,19 @@ pipeline {
     stages {
         stage('Linting') {
             steps {
-				sh 'tidy -q -e  **/*.html'
+				sh 'tidy -q -e  *.html'
 			}
         }
         stage('Build green image') {
             steps {
 			    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]){
 				    sh '''
-						docker build -t aycav/capstone -f green/Dockerfile .
+						docker build -t aycav/capstone .
 					'''
 			    }
 		    }
         }        
-        stage('Push green image') {
+        stage('Push image') {
             steps {
 				withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]){
 					sh '''
@@ -34,11 +34,11 @@ pipeline {
 				}
 			}
         }
-        stage('Deploy green container') {
+        stage('Deploy container') {
             steps {
 				withAWS(region:'us-east-1', credentials:'aws-credential') {
 					sh '''
-						kubectl apply -f ./green/green-controller.json
+						kubectl apply -f ./green-controller.json
 					'''
 				}
 			}
