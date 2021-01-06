@@ -1,23 +1,27 @@
-## ND9991 - C3 - Build CI/CD Pipelines, Monitoring, and Logging
-This repository provides the supporting material for the "ND9991 Cloud DevOps Nanodegree - C3 - Build CI/CD Pipelines, Monitoring, and Logging" course. This repo has two more branches, other than the master branch. 
-
-* Blue/Green branch corresponds to the Blue/Green deployment strategy. Make sure that you checkout branches "blue" and "green" to see how blue/green deployment was performed in the course.
-* You can create any more branches for a multiple pipeline set-up, as directed in the demonstration video. 
+## Udacity-DevOps-Capstone-Blue-Green-Deployment
+For the capstone project, i've developed a CI/CD pipeline for micro services applications with either blue/green deployment. I've also add stage to my jenkinsfile for typographical checking (“linting”)
 
 ### Dependencies
 ##### 1. AWS account
-You would require to have an AWS account to be able to build cloud infrastructure. Particularly, you will need to create S3 buckets, EC2 instances, and IAM users.
+For running Kuberntes on Amazon EKS, and running Jenkins pipeline on Amazon EC2 instance, you will need to create a AWS account. Follow this link to create your own AWS account: [Create AWS Account](https://portal.aws.amazon.com/billing/signup#/start)
 
-#### 2. Jenkins on Ubuntu VM
-As a part of the project, you will need to install Jenkins and a few plugins to assist your requirements, as mentioned in the "Jenkins Pipelines on AWS --> Project Details" page in the classroom. 
+#### 2. Jenkins and Docker, Kubernetes, Aws Cli, Ekstcl on Ubuntu VM
+As a part of the project, I had to create an ubuntu instance to install jenkins and run pipeline on it and load my application files on this.
 
-## Prerequisite
-1. A little knowledge of basic commands in Unix terminal.
-1. Understanding of software testing frameworks - JMeter and JUnit
-1. Understanding of deployment strategies 
+I've installed docker, aws-cli, eksctl, kubectl to my Ubuntu instance. This document can be followed for these installations: [How to install Docker, Aws Cli, Ekstcl, Kubectl on Linux Ubuntu](https://medium.com/@andresaaap/how-to-install-docker-aws-cli-eksctl-kubectl-for-jenkins-in-linux-ubuntu-18-04-3e3c4ceeb71)
 
+I've installed Blue Ocean plugin to run pipeline. And I've created docker images and deployed them and test locally first. The following document was very useful in this regard:
+https://medium.com/@andresaaap/simple-blue-green-deployment-in-kubernetes-using-minikube-b88907b2e267
 
+By the way i had to create two credential on Jenkins to contact with Aws and my dockerhub.
 
+### Jenkins Stages
+My Jenkinsfile contains these stages:
 
+- Linting for Html check with Tidy.
+- Builded and deployed my docker image (contains dockerhub login)
+- Created jenkinscluster with ekstcl
+- Deployed my container to cluster
+- Redirected service to my app that i chosen in blue-green-service.json
 
 
