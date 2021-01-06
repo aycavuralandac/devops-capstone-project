@@ -6,16 +6,16 @@ pipeline {
 				sh 'tidy -q -e  **/*.html'
 			}
         }
-        stage('Build blue image') {
+        stage('Build green image') {
             steps {
 			    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]){
 				    sh '''
-						docker build -t aycav/capstone -f blue/Dockerfile .
+						docker build -t aycav/capstone -f green/Dockerfile .
 					'''
 			    }
 		    }
         }        
-        stage('Push blue image') {
+        stage('Push green image') {
             steps {
 				withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]){
 					sh '''
@@ -34,16 +34,16 @@ pipeline {
 				}
 			}
         }
-        stage('Deploy blue container') {
+        stage('Deploy green container') {
             steps {
 				withAWS(region:'us-east-1', credentials:'aws-credential') {
 					sh '''
-						kubectl apply -f ./blue/blue-controller.json
+						kubectl apply -f ./green/green-controller.json
 					'''
 				}
 			}
         }
-        stage('Redirect service to blue container') {
+        stage('Redirect service to green container') {
             steps {
 				withAWS(region:'us-east-1', credentials:'aws-credential') {
 					sh '''
